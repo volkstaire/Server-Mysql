@@ -24,11 +24,12 @@ app.get('/order', function (req, res) {
 
     connection.connect()
 
-    connection.query(`SELECT nama_penyedia, nama_sumber_dana, kode_order, nama_pelanggan, tgl_order, total_order, status_order, id_order FROM tb_order WHERE nama_penyedia LIKE "%TD%" AND tgl_order >= CURDATE() - INTERVAL 7 DAY ORDER BY tgl_order`, (err, rows, fields) => {
+    connection.query(`SELECT nama_penyedia, nama_sumber_dana, kode_order, nama_pelanggan, tgl_order, total_order, status_order, id_order FROM tb_order WHERE (nama_penyedia LIKE "TD%" OR nama_penyedia = "Tisera Distribusindo") AND tgl_order >= CURDATE() - INTERVAL 7 DAY ORDER BY tgl_order`, (err, rows, fields) => {
         if (err) {
             res.status(400).send('Error: terdapat kesalahan pada route.')
         }
 
+        // Data presentation 
         // const csvString = [
         //     [
         //         "ID Order",
@@ -57,7 +58,7 @@ app.get('/order/csv', function (req, res) {
 
     connection.connect()
 
-    connection.query(`SELECT nama_penyedia, nama_sumber_dana, kode_order, nama_pelanggan, tgl_order, total_order, status_order, id_order FROM tb_order WHERE nama_penyedia LIKE "%TD%" AND tgl_order >= CURDATE() - INTERVAL 7 DAY ORDER BY tgl_order`, (err, rows, fields) => {
+    connection.query(`SELECT nama_penyedia, nama_sumber_dana, kode_order, nama_pelanggan, tgl_order, total_order, status_order, id_order FROM tb_order WHERE (nama_penyedia LIKE "TD%" OR nama_penyedia = "Tisera Distribusindo") AND tgl_order >= CURDATE() - INTERVAL 7 DAY ORDER BY tgl_order`, (err, rows, fields) => {
         if (err) {
             res.status(400).send('Error: terdapat kesalahan pada route.')
         }
@@ -91,7 +92,7 @@ app.get('/orderDetail', function (req, res) {
 
     connection.connect()
 
-    connection.query(`SELECT id_order, nama_produk, harga, qty, subtotal, id FROM tb_order_detail WHERE id_order IN ( SELECT id_order FROM tb_order WHERE nama_penyedia LIKE "%TD%" AND tgl_order >= CURDATE() - INTERVAL 7 DAY)`, (err, rows, fields) => {
+    connection.query(`SELECT id_order, nama_produk, harga, qty, subtotal, id FROM tb_order_detail WHERE id_order IN ( SELECT id_order FROM tb_order WHERE (nama_penyedia LIKE "TD%" OR nama_penyedia = "Tisera Distribusindo") AND tgl_order >= CURDATE() - INTERVAL 7 DAY)`, (err, rows, fields) => {
         if (err) {
             res.status(400).send('Error: terdapat kesalahan pada route.')
         }
@@ -120,7 +121,7 @@ app.get('/orderDetail/csv', function (req, res) {
 
     connection.connect()
 
-    connection.query(`SELECT id_order, nama_produk, harga, qty, subtotal, id FROM tb_order_detail WHERE id_order IN ( SELECT id_order FROM tb_order WHERE nama_penyedia LIKE "%TD%" AND tgl_order >= CURDATE() - INTERVAL 7 DAY)`, (err, rows, fields) => {
+    connection.query(`SELECT id_order, nama_produk, harga, qty, subtotal, id FROM tb_order_detail WHERE id_order IN ( SELECT id_order FROM tb_order WHERE (nama_penyedia LIKE "TD%" OR nama_penyedia = "Tisera Distribusindo") AND tgl_order >= CURDATE() - INTERVAL 7 DAY)`, (err, rows, fields) => {
         if (err) {
             res.status(400).send('Error: terdapat kesalahan pada route.')
         }
@@ -210,7 +211,7 @@ app.get('/orderTD/:year', function (req, res) {
 
     connection.connect()
 
-    connection.query(`SELECT nama_penyedia, nama_sumber_dana, kode_order, nama_pelanggan, tgl_order, total_order, status_order, id_order FROM tb_order WHERE YEAR(tgl_order) = ${req.params.year} AND (nama_penyedia LIKE "%TD%" OR nama_penyedia = "Tisera Distribusindo") ORDER BY tgl_order`, (err, rows, fields) => {
+    connection.query(`SELECT nama_penyedia, nama_sumber_dana, kode_order, nama_pelanggan, tgl_order, total_order, status_order, id_order FROM tb_order WHERE YEAR(tgl_order) = ${req.params.year} AND (nama_penyedia LIKE "TD%" OR nama_penyedia = "Tisera Distribusindo") ORDER BY tgl_order`, (err, rows, fields) => {
         if (err) {
             res.status(400).send('Error: terdapat kesalahan pada route.')
         }
